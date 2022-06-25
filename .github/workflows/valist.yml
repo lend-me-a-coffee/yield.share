@@ -24,5 +24,5 @@ jobs:
           private-key: ${{ secrets.PRIVATE_KEY }}
           account: javyer
           project: yieldshare
-          release: 0.0.1
+          release: 0.0.2
           files: 'client/build/**'
