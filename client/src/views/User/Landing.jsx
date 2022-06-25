@@ -9,13 +9,12 @@ import { networkParams } from "../../config/chainConfig"
 import { ethers } from "ethers";
 import Web3Modal from "web3modal";
 import { providerOptions } from "../../config/providerOptions";
-
+import { Box, SimpleGrid, Image, Center, Text } from '@chakra-ui/react';
 
 const web3Modal = new Web3Modal({
     cacheProvider: true, // optional
     providerOptions // required
 });
-import { Box, SimpleGrid, Image, Center, Text } from '@chakra-ui/react';
 
 const Landing = () => {
     const [provider, setProvider] = useState();
@@ -62,20 +61,23 @@ const Landing = () => {
     return (
         <>
         <Header/>
-            {!account ? (
-                <Button onClick={connectWallet}>Connect Wallet</Button>
-            ) : (
-                <>
-                <Button onClick={disconnect}>Disconnect</Button>
-                <p>Chain ID: {chainId}</p>
-                <p>Address: {account}</p>
-                </>
-            )}
-            <h1>Landing Page</h1>
+            {/* <h1>Landing Page</h1> */}
             {/* <Center> */}
                 {/* <Image src='gibbresh.png' fallbackSrc='https://via.placeholder.com/150' /> */}
             {/* </Center> */}
-            <Box mb={10} bg='grey' height='250px'></Box>
+            <Box mb={10} bg='grey' height='250px'>
+                {!account ? (
+                    <Center>
+                        <Button onClick={connectWallet}>Connect Wallet</Button>
+                    </Center>
+                ) : (
+                    <>
+                    <Button onClick={disconnect}>Disconnect</Button>
+                    <p>Chain ID: {chainId}</p>
+                    <p>Address: {account}</p>
+                    </>
+                )}
+            </Box>
 
             <Text p={4} align='center'>Select a Creator to Support</Text>
             <Box p={4}>
