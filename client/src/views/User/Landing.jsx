@@ -15,6 +15,7 @@ const web3Modal = new Web3Modal({
     cacheProvider: true, // optional
     providerOptions // required
 });
+import { Box, SimpleGrid, Image, Center, Text } from '@chakra-ui/react';
 
 const Landing = () => {
     const [provider, setProvider] = useState();
@@ -70,6 +71,50 @@ const Landing = () => {
                 <p>Address: {account}</p>
                 </>
             )}
+            <h1>Landing Page</h1>
+            {/* <Center> */}
+                {/* <Image src='gibbresh.png' fallbackSrc='https://via.placeholder.com/150' /> */}
+            {/* </Center> */}
+            <Box mb={10} bg='grey' height='250px'></Box>
+
+            <Text p={4} align='center'>Select a Creator to Support</Text>
+            <Box p={4}>
+                <SimpleGrid columns={{ base: 1, md: 3 }} spacing={10}>
+                    <Box>
+                        <Center>
+                            <Image
+                                borderRadius='full'
+                                boxSize='150px'
+                                src='https://bit.ly/dan-abramov'
+                                alt='Dan Abramov'
+                            />
+                        </Center>
+                        <Text p={4} align='center'>Person A</Text>
+                    </Box>
+                    <Box>
+                        <Center>
+                            <Image
+                                borderRadius='full'
+                                boxSize='150px'
+                                src='https://bit.ly/dan-abramov'
+                                alt='Dan Abramov'
+                            />
+                        </Center>
+                        <Text p={4} align='center'>Best Food Creator</Text>
+                    </Box>
+                    <Box>
+                        <Center>
+                            <Image
+                                borderRadius='full'
+                                boxSize='150px'
+                                src='https://bit.ly/dan-abramov'
+                                alt='Dan Abramov'
+                            />
+                        </Center>
+                        <Text p={4} align='center'>Person C</Text>
+                    </Box>
+                </SimpleGrid>
+            </Box>
         </>
     );
 }
