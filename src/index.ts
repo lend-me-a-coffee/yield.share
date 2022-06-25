@@ -6,8 +6,10 @@ const app = express();
 
 app.use(cors());
 
-app.use("/", (_, res) => {
-    res.send("Hello World");
+app.use("/", express.static("./client/build"));
+
+app.use("/health", (_, res) => {
+    res.send("Ok");
 });
 
 const port = process.env.PORT || 4000;
