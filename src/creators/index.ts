@@ -21,8 +21,8 @@ export interface Creator {
 interface Comment {
     text: string;
     author: string;
-    amount: number;
-    duration: number;
+    amount?: number;
+    duration?: number;
 }
 
 export interface CommentInput {

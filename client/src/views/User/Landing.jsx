@@ -103,12 +103,13 @@ const Landing = () => {
                 </Container>
                 <Container maxW='6xl' p={6} mb={6}>
                     <SimpleGrid columns={{ base: 1, md: 3 }} mb={4} spacing={4}>
-                        {creators.map((creator) => {
+                        {creators.map((creator, i) => {
                             return (
                                 <Container
                                 maxW='sm'
                                 border='solid 2px #f3f3f3'
                                 borderRadius='lg'
+                                id={i}
                             >
                                 <Box
                                     pt={3}
@@ -136,7 +137,9 @@ const Landing = () => {
                                         color='#fff'
                                         size='lg'
                                     >
-                                        <NavLink to={`/detailView/${creator.address}`}>View Creator</NavLink>
+                                        <NavLink to={`/detailView/${creator.address}`}>
+                                            <Link>View Creator</Link>
+                                        </NavLink>
                                     </Button>
                                 </Box>
                             </Container>
