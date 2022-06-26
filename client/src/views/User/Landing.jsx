@@ -26,11 +26,20 @@ const Landing = () => {
     return (
         <>  
             <Header optionToCreate={true}/>
-            <SimpleGrid columns={{ base: 1, md: 2 }} pb={4} bgColor='#4791D1'>
-                <Container maxW='lg'>
+            <SimpleGrid columns={{ base: 1, md: 2 }} pb={4} style={{background: "linear-gradient(180deg, #4791D1 16.51%, #4791D1 54.62%, #225683 77.38%)", overflow: "hidden"}}>
+                <Container maxW='lg' style={{width: "100%", padding: "200px 0"}}>
                     <Text p={6} fontSize='5xl' fontWeight='bold' color='#fff'>
                         Stake your assets, support the creator with the yield.
                     </Text>
+                </Container>
+
+                <Container maxW='lg' style={{width: "100%", position: "relative", top: "0", left: "-120px"}}>
+                    <Image
+                        mb={4}
+                        src='hero-img.png'
+                        fallbackSrc='hero-img.png'
+                        style={{width: "1000px", height: "auto", position: "relative", top: "120px"}}
+                    />
                 </Container>
             </SimpleGrid>
 
@@ -50,9 +59,10 @@ const Landing = () => {
                         <Container maxW='sm' centerContent>
                             <Image
                                 mb={4}
-                                src='gibbresh.png' 
-                                fallbackSrc='https://via.placeholder.com/140'
+                                src='a-wallet.svg'
+                                fallbackSrc='a-wallet.svg'
                                 borderRadius='full'
+                                style={{width: "120px", marginBottom: "20px"}}
                             />
                             <HStack fontSize='xl'>
                                 {/* <Text mr={6}>1)</Text> */}
@@ -62,9 +72,10 @@ const Landing = () => {
                         <Container maxW='sm' centerContent>
                             <Image
                                 mb={4}
-                                src='gibbresh.png' 
-                                fallbackSrc='https://via.placeholder.com/140'
+                                src='a-yield.svg'
+                                fallbackSrc='a-yield.svg'
                                 borderRadius='full'
+                                style={{width: "120px", marginBottom: "20px"}}
                             />
                             <HStack fontSize='xl'>
                                 <Text>
@@ -77,9 +88,10 @@ const Landing = () => {
                         <Container maxW='sm' centerContent>
                             <Image
                                 mb={4}
-                                src='gibbresh.png' 
-                                fallbackSrc='https://via.placeholder.com/140'
+                                src='a-comment.svg'
+                                fallbackSrc='a-comment.svg'
                                 borderRadius='full'
+                                style={{width: "120px", marginBottom: "20px"}}
                             />
                             <HStack fontSize='xl'>
                                 <Text>

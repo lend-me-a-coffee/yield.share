@@ -8,8 +8,8 @@ const Footer = () => {
             <Center>
                 <Image
                     mb={4}
-                    src='gibbresh.png' 
-                    fallbackSrc='https://via.placeholder.com/100'
+                    src='footer-logo.svg'
+                    fallbackSrc='footer-logo.svg'
                     borderRadius='full'
                 />
             </Center>
