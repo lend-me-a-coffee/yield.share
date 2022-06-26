@@ -37,6 +37,7 @@ app.get("/api/listCreators", async (req, res) => {
 
 app.post("/api/createUser", (req, res, next) => {
     const creatorData: Creator = req.body;
+    console.log(`creating user for ${creatorData.address}`);
     createUser(creatorData)
         .then(_ => res.status(200))
         .catch(e => next(e));
