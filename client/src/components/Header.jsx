@@ -1,15 +1,5 @@
 import {useContext} from "react";
-import {
-    Box,
-    Button,
-    Flex,
-    HStack,
-    IconButton,
-    Link,
-    useColorMode,
-    useColorModeValue,
-    useDisclosure,
-} from "@chakra-ui/react";
+import {Box, Button, Flex, HStack, IconButton, useColorMode, useColorModeValue, useDisclosure,} from "@chakra-ui/react";
 import {CloseIcon, HamburgerIcon, MoonIcon, SunIcon} from "@chakra-ui/icons";
 import LoginBttn from "./LoginBttn"
 import {userContext} from "../context/UserContext";
@@ -42,14 +32,14 @@ const Header = (props) => {
                     display={{ base: 'none', md: 'flex' }}>
                     </HStack>
                     <NavLink to="/">
-                        <Link>Home</Link>
+                        Home
                     </NavLink>
                 </HStack>
                 <Flex alignItems={'center'}>
                     {optionToCreate && address ?  
                     <Button colorScheme='teal' variant='solid' spacing={4}>
                         <NavLink to="/createProfile">
-                            <Link>Create Profile</Link>
+                            Create Profile
                         </NavLink>
                     </Button>
                     :
