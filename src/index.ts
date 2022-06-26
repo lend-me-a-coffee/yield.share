@@ -9,6 +9,7 @@ import {toWalletType, WalletType} from "./blockchain/Wallet";
 import {fetchData} from "./blockchain/ipfsApi";
 import NodeCache from "node-cache";
 import {CommentMetadata} from "./blockchain";
+import path from "path";
 
 const app = express();
 
@@ -20,9 +21,7 @@ const jsonParser = bodyParser.json();
 
 app.use(jsonParser);
 
-app.use("/", express.static("./client/build"));
-
-app.use("/health", (_, res) => {
+app.use("/api/health", (_, res) => {
     res.send("Ok");
 });
 
@@ -97,7 +96,12 @@ app.get("/api/wallets", (req, res, next) => {
             res.json(statuses);
         })
         .catch(next);
-})
+});
+
+app.use("/", express.static("./client/build"));
+
+app.get("*", (req, res) => res.sendFile(path.resolve("client", "build", "index.html")));
+
 
 const port = process.env.PORT || 4000;
 
