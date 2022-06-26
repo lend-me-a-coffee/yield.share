@@ -35,7 +35,7 @@ app.get("/api/listCreators", async (req, res) => {
     return res.json(creators);
 });
 
-app.get("/api/createUser", (req, res, next) => {
+app.post("/api/createUser", (req, res, next) => {
     const creatorData: Creator = req.body;
     createUser(creatorData)
         .then(_ => res.status(200))
