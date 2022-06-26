@@ -3,10 +3,10 @@ import {Comment__factory} from "../contracts";
 
 export enum WalletType {
     optimism = "optimism",
-    polygon = "Polygon",
-    cronos = "Cronos",
-    skale = "Skale",
-    boba = "Boba"
+    polygon = "polygon",
+    cronos = "cronos",
+    skale = "skale",
+    boba = "boba"
 }
 
 export const toWalletType = (wallet: string) => {
