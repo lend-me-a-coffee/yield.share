@@ -45,12 +45,19 @@ export abstract class Wallet {
         const countBn = await nftContract.count();
         const count = countBn.toNumber();
 
-        const nft: Promise<string>[] = [];
+        const nfts: Promise<string | null>[] = [];
         for (let i = 0; i < count; i++) {
-            nft.push(nftContract.tokenURI(i));
+            nfts.push(new Promise<string | null>(res => {
+                nftContract.tokenURI(i).then(nft => res(nft))
+                    .catch(_ => {
+                        console.warn(`NFT ${i} for ${contractAddress} has been burnt`);
+                        res(null)
+                    });
+            }));
         }
 
-        return Promise.all(nft);
+        const resolvedPromises = await Promise.all(nfts);
+        return resolvedPromises.filter(f => f !== undefined && f !== null) as string[];
     }
 
     public async getBlock(): Promise<number> {
