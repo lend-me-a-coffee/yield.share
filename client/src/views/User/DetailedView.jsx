@@ -49,13 +49,13 @@ const DetailedView = () => {
             axios.get(`${serverUrl}creator?address=${userAddress}`)
             .then((response) => {
                 setCreator(response.data)
+                console.log("Received data", response.data);
+                setOtherComments(response.data.comments);
                 response.data.comments.filter((comment)=>{
                     // seperate curent user and other users NFTS
                     if(comment.author!=address && !userComments.includes(comment)){
                         setUserComments([...userComments, comment])
                     }
-
-                        setOtherComments([...otherComments, comment])
                     })
             });
         } catch (error) {
