@@ -166,8 +166,7 @@ const CreateProfile = () => {
                         mr={4}
                         borderRadius='full'
                         boxSize='80px'
-                        src='https://bit.ly/dan-abramov'
-                        alt='Dan Abramov'
+                        src='caution-icon.svg'
                     />
                     <Box
                         pl={4}
