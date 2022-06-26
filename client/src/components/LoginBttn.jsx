@@ -2,11 +2,12 @@ import { useEffect, useState, useContext } from "react";
 import {
     Button,
 } from "@chakra-ui/react";
-import {networkParams} from "../config/chainConfig"
 import { ethers } from "ethers";
 import { providerOptions } from "../config/providerOptions";
 import Web3Modal from "web3modal";
 import { userContext } from "../context/UserContext";
+import axios from "axios";
+import { serverUrl } from "../services/serverUrl";
 
 
 const LoginBttn = () => {
@@ -15,7 +16,8 @@ const LoginBttn = () => {
         providerOptions // required
     });
 
-    const { address, setAddress } = useContext(userContext);
+    const { address, setAddress, isCreator, setIsCreator } = useContext(userContext)
+    ;
     const [chainId, setChainId] = useState("")
 
 
@@ -25,23 +27,25 @@ const LoginBttn = () => {
             const library = new ethers.providers.Web3Provider(provider);
             const accounts = await library.listAccounts();
             const network = await library.getNetwork();
-            if (accounts) setAddress(accounts[0]);
-            setChainId(network.chainId);
+                if (accounts){
+                    setAddress(accounts[0]);
+                    setChainId(network.chainId);
+                } 
             } catch (error) {
             console.log(error);
             }
     };
-        
+
 
     const disconnect = async () => {
         await web3Modal.clearCachedProvider();
         refreshState();
     };
     
-
     const refreshState = () => {
-        setAddress();
-        setChainId();
+        setAddress("");
+        setChainId("");
+        setIsCreator(false)
     };
     
         

@@ -16,17 +16,16 @@ import { useState } from 'react';
 
 function App() {
   const [address, setAddress] = useState("");
-  const value = { address, setAddress };
-
+  const [isCreator, setIsCreator] = useState(false)
+  const value = { address, setAddress, isCreator, setIsCreator };
 
   return (
     <div>
       <ChakraProvider> 
       <userContext.Provider value={value}>          
             <Routes>
-              {/* update params as needed */}
                 <Route path="/" element={<Landing/>}/>
-                <Route path="/detailView/:address" element={<DetailedView/>}/>
+                <Route path="/detailView/:userAddress" element={<DetailedView/>}/>
                 <Route path="/createStake" element={<CreateStake/>}/>
                 <Route path="/loading" element={<Loading/>}/>  
                 <Route path="/stakeSuccess" element={<StakeSuccess/>} />    
