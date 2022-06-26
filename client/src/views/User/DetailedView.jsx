@@ -68,11 +68,14 @@ const DetailedView = () => {
         {console.log(userComments)}
         {console.log(otherComments)}
             <Header optionToCreate={true}/>
-            <Container
+
+            <Box p={4} mb={4} bgColor='#4791D1'>
+                <Container
                     bgColor='#fff'
                     maxW='3xl'
                     centerContent
                     borderRadius='md'
+                    border="solid 1px #ccc"
                 >
                     <Box pt={6} maxW='lg'>
                         <Image
@@ -82,11 +85,6 @@ const DetailedView = () => {
                             alt={creator.name}
                         />
                     </Box>
-                </Container>
-                <Container maxW='3xl' centerContent>
-                </Container>
-            <Box p={4} mb={4} bgColor='#4791D1'>
-                <Container maxW='3xl' centerContent>
                     <Box
                         p={2}
                         maxW='lg'
@@ -106,9 +104,8 @@ const DetailedView = () => {
                     </Box>
                     <Box
                         maxW='lg'
-                        bgcolor='#4791D1'
                         fontSize='md'
-                        color='#fff'
+                        color='#4791D1'
                         fontWeight='semibold'
                     >
                         ❤️ 200 Supporters

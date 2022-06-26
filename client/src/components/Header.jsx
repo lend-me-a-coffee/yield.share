@@ -11,7 +11,6 @@ import {
     useColorModeValue,
     useDisclosure,
 } from "@chakra-ui/react";
-import {CloseIcon, HamburgerIcon, MoonIcon, SunIcon} from "@chakra-ui/icons";
 import LoginBttn from "./LoginBttn"
 import {userContext} from "../context/UserContext";
 import {NavLink} from "react-router-dom";
@@ -26,25 +25,13 @@ const Header = (props) => {
         <>
         <Box px={4}>
             <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
-                <IconButton
-                    size={'md'}
-                    icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
-                    aria-label={'Open Menu'}
-                    display={{ md: 'none' }}
-                    onClick={isOpen ? onClose : onOpen}
-                />
                 <HStack spacing={8} alignItems={'center'}>
                     {/* <Box Link>Logo</Box> */}
-                    <HStack
-                    as={'nav'}
-                    spacing={4}
-                    display={{ base: 'none', md: 'flex' }}>
-                    </HStack>
                     <NavLink to="/">
                         <Image
                             mb={4}
-                            src='logo-navbar.svg'
-                            fallbackSrc='logo-navbar.svg'
+                            src='../logo-navbar.svg'
+                            fallbackSrc='../logo-navbar.svg'
                             borderRadius='full'
                             id='navbar-logo '
                             style={{marginBottom: "0", marginTop: "0"}}
@@ -53,7 +40,7 @@ const Header = (props) => {
                 </HStack>
                 <Flex alignItems={'center'}>
                     {optionToCreate && address ?  
-                    <Button colorScheme='teal' variant='solid' spacing={4}>
+                    <Button bgColor={'transparent'} color={'#4791D1'} variant='solid' spacing={4}>
                         <NavLink to="/createProfile">
                             Create Profile
                         </NavLink>
@@ -61,9 +48,6 @@ const Header = (props) => {
                     :
                     null}
                     <LoginBttn/>
-                    <Button onClick={toggleColorMode}  size={'sm'} variant='link'>
-                        {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
-                    </Button>
                 </Flex>
             </Flex>
         </Box>

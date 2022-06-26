@@ -8,8 +8,8 @@ const Footer = () => {
             <Center>
                 <Image
                     mb={4}
-                    src='footer-logo.svg'
-                    fallbackSrc='footer-logo.svg'
+                    src='../footer-logo.svg'
+                    fallbackSrc='../footer-logo.svg'
                     borderRadius='full'
                 />
             </Center>
