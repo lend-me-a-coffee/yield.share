@@ -9,7 +9,7 @@ const ProfileSuccess = () => {
             <h1>Success on Creator Profile</h1>
             <Button colorScheme='teal' variant='solid' spacing={4}>
                 <NavLink to="/detailView/0">
-                    <Link>View Profile</Link>
+                    View Profile
                 </NavLink>
             </Button>
         </>

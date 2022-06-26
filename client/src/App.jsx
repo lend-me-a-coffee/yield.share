@@ -11,6 +11,7 @@ import DetailedView from "./views/User/DetailedView";
 import NotFound from './views/User/NotFound';
 import { userContext } from './context/UserContext';
 import { useState } from 'react';
+import {WalletProvider} from "./context/Wallet";
 
 
 
@@ -21,20 +22,22 @@ function App() {
 
   return (
     <div>
-      <ChakraProvider> 
-      <userContext.Provider value={value}>          
+      <ChakraProvider>
+          <WalletProvider>
+      <userContext.Provider value={value}>
             <Routes>
                 <Route path="/" element={<Landing/>}/>
                 <Route path="/detailView/:userAddress" element={<DetailedView/>}/>
                 <Route path="/createStake" element={<CreateStake/>}/>
-                <Route path="/loading" element={<Loading/>}/>  
-                <Route path="/stakeSuccess" element={<StakeSuccess/>} />    
+                <Route path="/loading" element={<Loading/>}/>
+                <Route path="/stakeSuccess" element={<StakeSuccess/>} />
                 <Route path="/removeStake/:contractAddress/:tokenId" element={<RemoveStake/>}/>
                 <Route path="/createProfile" element={<CreateProfile/>} />
                 <Route path="/profileSuccess" element={<ProfileSuccess/>} />
                 <Route path="*" element={<NotFound/>}/>
             </Routes>
             </userContext.Provider>
+          </WalletProvider>
         </ChakraProvider>
       </div>
   );

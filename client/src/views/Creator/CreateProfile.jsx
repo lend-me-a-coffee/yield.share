@@ -17,52 +17,80 @@ import {
     Image, 
     SimpleGrid
 } from '@chakra-ui/react'
+import {useWallet} from "../../context/Wallet";
+import {Chains, changeNetwork} from "../../blockchain/networks";
+import {deploy} from "../../deploy";
+import {useNavigate} from "react-router-dom";
 
 
 
 const CreateProfile = () => {
-    const [insta, setInsta] = useState("")
-    const [twitter, setTwitter] = useState("")
-    const [facebook, setFacebook] = useState("")    
+    const wallet = useWallet();
+    const navigate = useNavigate();
+    const defaultChain = "optimism";
     const [name, setName] = useState("")
     const [tagline, setTagline] = useState("")
-    const [links, setLinks] = useState([])
+    const [twitter, setTwitter] = useState()
+    const [facebook, setFb] = useState()
+    const [instagram, setIg] = useState()
     const [description, setDescription] = useState("")
     const [picUrl, setPicUrl] = useState("")
-    const [chain, setChain] = useState("")
+    const [chain, setChain] = useState(defaultChain);
     const { address, setAddress } = useContext(userContext);
 
-    const addLinks = () => {
-        setLinks([twitter, facebook, insta])
+    const switchNetwork = async (network) => {
+        let chainToSwitch;
+        switch (network){
+            case "optimism":
+                chainToSwitch = Chains.OPTIMISM;
+                break;
+            case "polygon":
+                chainToSwitch = Chains.POLYGON;
+                break;
+            case "boba":
+                chainToSwitch = Chains.BOBA;
+                break;
+            case "cronos":
+                chainToSwitch = Chains.CRONOS;
+                break;
+            case "skale":
+                chainToSwitch = Chains.SKALE;
+                break;
+            default:
+                throw new Error(`${network} not supported`);
+        }
+        console.log("switching to", chainToSwitch);
+        await changeNetwork(chainToSwitch);
+        setChain(network);
     }
 
-    const handleSubmit = (e) => {
-        addLinks()
+
+    const handleSubmit = async (e) => {
         try{
-            axios.post(`${serverUrl}createUser`, {
-                name: name,
+            const contractAddress = "0x4a704da40706249a2ac1c469F2asdasdasd";
+            // const contractAddress = await deploy(wallet.provider);
+
+            const userData = {
+                name,
                 tagline: tagline,
-                links: links,
-                address: address,
+                links: [twitter, facebook, instagram],
+                address: contractAddress,
                 description: description,
                 photo: picUrl,
                 chain: chain
-            })
+            };
+
+            await axios.post(`${serverUrl}createUser`, userData)
             .then(function (response) {
                 console.log(response.data);
             })
             .catch(function (error) {
                 console.log(error);
             });
-            setName("")
             setTagline("")
-            setLinks([])
             setDescription("")
             setPicUrl("")
-            setChain("")
-            setInsta("")
-            setTwitter("")
-            setFacebook("")
+            navigate(`../detailView/${contractAddress}`);
         }
         catch(error){
             console.log(error)
@@ -90,10 +118,13 @@ const CreateProfile = () => {
                     <FormLabel htmlFor='description' fontWeight='semibold'>Set Creator Description</FormLabel>
                     <Textarea mb={4} rows='4' placeholder='I also do other things, I just like saving kittens and it is really important to me. Join me in my quest to save the kittens.' bgColor='white' onChange={e => setDescription(e.target.value)} />
 
-                    <FormLabel htmlFor='chain' fontWeight='semibold'>Select Chain</FormLabel>
-                    <Select onChange={e => setChain(e.target.value)} mb={4} placeholder='Select Chain' bgColor='#fff'>
+                    <FormLabel htmlFor='first-name' fontWeight='semibold'>Select on Which Chain Users can Stake</FormLabel>
+                    <Select mb={4} placeholder='Select Chain' bgColor='#fff' onChange={e => switchNetwork(e.target.value)}>
                         <option value='polygon'>Polygon</option>
                         <option value='optimism'>Optimism</option>
+                        <option value='boba'>Boba</option>
+                        <option value='cronos'>Cronos</option>
+                        <option value='skale' disabled>Skale</option>
                     </Select>
 
                     <FormLabel htmlFor='picUrl' fontWeight='semibold'>Set Profile Pic URL</FormLabel>
@@ -102,18 +133,18 @@ const CreateProfile = () => {
                     <SimpleGrid columns={{ base: 1, md: 2 }}>
                         <Box mr={2}>
                             <Box mb={2} fontWeight='semibold'>Twitter URL</Box>
-                            <Input  onChange={e => setTwitter(e.target.value)} mb={4} id='twitter' placeholder='twitter.com/vitalik' bgColor='white' />
+                            <Input mb={4} id='first-name' placeholder='twitter.com/vitalik' bgColor='white' onChange={e => setTwitter(e.target.value)} />
                         </Box>
                         <Box>
                             <Box mb={2} fontWeight='semibold'>Facebook URL</Box>
-                            <Input  onChange={e => setFacebook(e.target.value)} mb={4} id='facebook' placeholder='facebook.com/vitalik' bgColor='white' />
+                            <Input mb={4} id='first-name' placeholder='facebook.com/vitalik' bgColor='white' onChange={e => setFb(e.target.value)}  />
                         </Box>
                     </SimpleGrid>
 
                     <SimpleGrid columns={{ base: 1, md: 2 }}>
                         <Box mr={2}>
                             <Box mb={2} fontWeight='semibold'>Instagram URL</Box>
-                            <Input  onChange={e => setInsta(e.target.value)} mb={4} id='insta' placeholder='instagram.com/vitalik' bgColor='white' />
+                            <Input mb={4} id='first-name' placeholder='instagram.com/vitalik' bgColor='white' onChange={e => setIg(e.target.value)} />
                         </Box>
                     </SimpleGrid>
                 </FormControl>

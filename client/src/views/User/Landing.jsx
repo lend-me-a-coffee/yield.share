@@ -109,7 +109,7 @@ const Landing = () => {
                                 maxW='sm'
                                 border='solid 2px #f3f3f3'
                                 borderRadius='lg'
-                                id={i}
+                                key={`${i}`}
                             >
                                 <Box
                                     pt={3}
@@ -138,7 +138,7 @@ const Landing = () => {
                                         size='lg'
                                     >
                                         <NavLink to={`/detailView/${creator.address}`}>
-                                            <Link>View Creator</Link>
+                                            View Creator
                                         </NavLink>
                                     </Button>
                                 </Box>
