@@ -11,8 +11,10 @@ datasource db {
 }
 
 model Creator {
-  id          String @id @map("_id")
-  title       String
+  address     String @id @map("_id")
+  name        String
+  chain       String
+  tagline     String
   description String
   photo       String
   links       String[]

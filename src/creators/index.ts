@@ -10,10 +10,12 @@ const prismaConnection = async () => {
 
 export interface Creator {
     name: string;
+    tagline: string;
     links: string[];
     address: string;
     description: string;
     photo: string;
+    chain: string;
 }
 
 interface Comment {
