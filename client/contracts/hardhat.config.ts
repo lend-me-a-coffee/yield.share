@@ -42,7 +42,7 @@ const config: HardhatUserConfig = {
     apiKey: process.env.ETHERSCAN_API_KEY,
   },
   typechain: {
-    outDir: "../src/contracts",
+    outDir: "../../src/contracts",
     target: "ethers-v5",
   },
 };
