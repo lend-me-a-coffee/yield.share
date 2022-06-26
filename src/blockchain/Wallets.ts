@@ -2,32 +2,48 @@ import {Wallet, WalletType} from "./Wallet";
 
 export class OptimismWallet extends Wallet {
     constructor() {
-        super(process.env.OPTIMISM_ENDPOINT!, WalletType.Optimism);
+        super(process.env.OPTIMISM_ENDPOINT!, WalletType.optimism);
     }
 }
 
 export class PolygonWallet extends Wallet {
     constructor() {
-        super(process.env.POLYGON_ENDPOINT!, WalletType.Polygon);
+        super(process.env.POLYGON_ENDPOINT!, WalletType.polygon);
     }
 }
 
 export class CronosWallet extends Wallet {
     constructor() {
-        super(process.env.CRONOS_ENDPOINT!, WalletType.Cronos);
+        super(process.env.CRONOS_ENDPOINT!, WalletType.cronos);
     }
 }
 
 export class SkaleWallet extends Wallet {
     constructor() {
-        super(process.env.SKALE_ENDPOINT!, WalletType.Skale);
+        super(process.env.SKALE_ENDPOINT!, WalletType.skale);
     }
 }
 
 export class BobaWallet extends Wallet {
     constructor() {
-        super(process.env.BOBA_ENDPOINT!, WalletType.Boba);
+        super(process.env.BOBA_ENDPOINT!, WalletType.boba);
     }
+}
+
+export const getWalletByType = (type:WalletType):Wallet => {
+    switch (type){
+        case WalletType.optimism:
+            return new OptimismWallet();
+        case WalletType.polygon:
+            return new PolygonWallet();
+        case WalletType.cronos:
+            return new CronosWallet();
+        case WalletType.skale:
+            return new SkaleWallet();
+        case WalletType.boba:
+            return new BobaWallet();
+    }
+    throw new Error(`Wallet ${type} does not exists`)
 }
 
 export async function reportWalletStatuses(): Promise<{name:string, lastBlock:number}[]> {

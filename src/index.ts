@@ -1,10 +1,12 @@
 import cors from "cors";
 import "dotenv/config";
 import express from "express";
-import {createUser, Creator, fetchAllUsers, fetchUser, generateCommentMetadata} from "./creators";
+import {CommentInput, createUser, Creator, fetchAllUsers, fetchUser, generateCommentMetadata} from "./creators";
 import bodyParser from "body-parser";
-import {reportWalletStatuses} from "./blockchain/Wallets";
+import {getWalletByType, reportWalletStatuses} from "./blockchain/Wallets";
 import {uploadComment} from "./blockchain/metadata";
+import {toWalletType, WalletType} from "./blockchain/Wallet";
+import {fetchData} from "./blockchain/ipfsApi";
 
 const app = express();
 
@@ -32,14 +34,25 @@ app.get("/api/createUser", (req, res, next) => {
         .catch(e => next(e));
 })
 
-app.get("/api/creator", (req, res, next) => {
+app.get("/api/creator", async (req, res, next) => {
     const address = req.query.address as string;
     if (!address) {
         return res.status(400);
     }
-    return fetchUser(address)
-        .then(user => res.json(user))
-        .catch(e => next(e));
+    try {
+        const user = await fetchUser(address);
+        if (!user) {
+            return res.status(404);
+        }
+        const type: WalletType = toWalletType(user.chain);
+        const wallet = getWalletByType(type);
+        const nfts = await wallet.getAllNftMetadata(address);
+        const nftMetadata = await Promise.all(nfts.map(ci => fetchData<CommentInput>(ci)));
+        const userData = {...user, nft: nftMetadata};
+        return res.json(userData);
+    } catch (e) {
+        return next(e);
+    }
 })
 
 app.post("/api/uploadComment", async (req, res, next) => {

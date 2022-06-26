@@ -2,12 +2,29 @@ import {ethers} from "ethers";
 import {Comment__factory} from "../contracts";
 
 export enum WalletType {
-    None,
-    Optimism = "Optimism",
-    Polygon = "Polygon",
-    Cronos = "Cronos",
-    Skale = "Skale",
-    Boba = "Boba"
+    optimism = "optimism",
+    polygon = "Polygon",
+    cronos = "Cronos",
+    skale = "Skale",
+    boba = "Boba"
+}
+
+export const toWalletType = (wallet: string) => {
+    const lowerCase = wallet.toLowerCase();
+    switch (lowerCase) {
+        case WalletType.optimism.toString():
+            return WalletType.optimism;
+        case WalletType.polygon.toString():
+            return WalletType.polygon;
+        case WalletType.cronos.toString():
+            return WalletType.cronos;
+        case WalletType.skale.toString():
+            return WalletType.skale;
+        case WalletType.boba.toString():
+            return WalletType.boba;
+        default:
+            throw new Error(`Type ${lowerCase} not recognized!`);
+    }
 }
 
 export abstract class Wallet {

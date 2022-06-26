@@ -12,7 +12,7 @@ export async function storeFile(filePath: string) {
     return await nftstorage.storeBlob(file);
 }
 
-export async function fetchData(cid: string) {
+export async function fetchData<T>(cid: string):Promise<T> {
     const config = {
         headers: {
             "x-api-key": process.env.TATUM_API!
@@ -20,7 +20,7 @@ export async function fetchData(cid: string) {
     };
 
     const call = await axios.get(`https://api-eu1.tatum.io/v3/ipfs/${cid}`, config);
-    return call.data;
+    return call.data as T;
 }
 
 async function fileFromPath(filePath: string) {
