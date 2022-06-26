@@ -1,7 +1,7 @@
 import cors from "cors";
 import "dotenv/config";
 import express from "express";
-import {fetchAllUsers, generateCommentMetadata} from "./creators";
+import {createUser, Creator, fetchAllUsers, generateCommentMetadata} from "./creators";
 import bodyParser from "body-parser";
 import {reportWalletStatuses} from "./blockchain/Wallets";
 import {uploadComment} from "./blockchain/metadata";
@@ -23,6 +23,13 @@ app.use("/health", (_, res) => {
 app.get("/api/listCreators", async (req, res) => {
     const creators = await fetchAllUsers();
     res.json(creators);
+});
+
+app.get("/api/createUser", (req, res, next) => {
+    const creatorData: Creator = req.body;
+    createUser(creatorData)
+        .then(_ => res.status(200))
+        .catch(e => next(e));
 })
 
 app.post("/api/uploadComment", async (req, res, next) => {
