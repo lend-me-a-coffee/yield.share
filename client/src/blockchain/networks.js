@@ -4,8 +4,9 @@ export const Chains = {
     POLYGON: 137,
     OPTIMISM: 10,
     CRONOS: 338,
-    BOBA: 288,
-    SKALE: 344435
+    BOBA: 28,
+    SKALE: 344435,
+    RINKEBY: 4
 }
 
 export const changeNetwork = async (chain) => {
