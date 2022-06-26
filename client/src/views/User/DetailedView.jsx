@@ -56,6 +56,27 @@ const DetailedView = () => {
         <>
         {console.log(JSON.stringify(creator))}
             <Header optionToCreate={true}/>
+            <Container
+                    bgColor='#fff'
+                    maxW='3xl'
+                    centerContent
+                    borderRadius='md'
+                    // border="solid 1px #ccc"
+                >
+                    <Box pt={6} maxW='lg'>
+                        <Image
+                            borderRadius='full'
+                            boxSize='150px'
+                            src={creator.photo}
+                            alt={creator.name}
+                        />
+                    </Box>
+                </Container>
+                <Container maxW='3xl' centerContent>
+                    <Box p={4} maxW='lg' color='black' fontSize='4xl'>
+                        {creator.tagline}
+                    </Box>
+                </Container>
             <Box p={4} mb={4} bgColor='#4791D1'>
                 <Container maxW='3xl' centerContent>
                     <Box p={4} maxW='lg' color='black'>
@@ -80,8 +101,9 @@ const DetailedView = () => {
                     </Box>
                     <Box
                         maxW='lg'
-                        color='#4791D1'
+                        bgcolor='#4791D1'
                         fontSize='md'
+                        color='#fff'
                         fontWeight='semibold'
                     >
                         ❤️ 200 Supporters
