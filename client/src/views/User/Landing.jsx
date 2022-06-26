@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import Header from "../../components/Header";
-import { Box, SimpleGrid, Image, Center, Text, Link, Container, Button, HStack } from '@chakra-ui/react';
+import { Box, SimpleGrid, Image, Center, Text, Container, Button, HStack } from '@chakra-ui/react';
 import { useState } from "react";
 import axios from 'axios';
 import { serverUrl } from "../../services/serverUrl";
@@ -121,7 +121,7 @@ const Landing = () => {
                                 maxW='sm'
                                 border='solid 2px #f3f3f3'
                                 borderRadius='lg'
-                                id={i}
+                                key={`${i}`}
                             >
                                 <Box
                                     pt={3}
@@ -150,7 +150,7 @@ const Landing = () => {
                                         size='lg'
                                     >
                                         <NavLink to={`/detailView/${creator.address}`}>
-                                            <Link>View Creator</Link>
+                                            View Creator
                                         </NavLink>
                                     </Button>
                                 </Box>

@@ -9,50 +9,84 @@ import {
     FormControl,
     FormLabel,
     Input,
-    Textarea, 
-    Button, 
-    Box, 
-    Container, 
-    Select, 
-    Image, 
+    Textarea,
+    Button,
+    Box,
+    Container,
+    Select,
+    Image,
     SimpleGrid
 } from '@chakra-ui/react'
+import {useWallet} from "../../context/Wallet";
+import {Chains, changeNetwork} from "../../blockchain/networks";
+import {deploy} from "../../deploy";
+import {useNavigate} from "react-router-dom";
 
 
 
 const CreateProfile = () => {
+    const wallet = useWallet();
+    const navigate = useNavigate();
+    const defaultChain = "optimism";
     const [name, setName] = useState("")
     const [tagline, setTagline] = useState("")
-    const [links, setLinks] = useState([])
+    const [twitter, setTwitter] = useState()
+    const [facebook, setFb] = useState()
+    const [instagram, setIg] = useState()
     const [description, setDescription] = useState("")
     const [picUrl, setPicUrl] = useState("")
-    const [chain, setChain] = useState("")
+    const [chain, setChain] = useState(defaultChain);
     const { address, setAddress } = useContext(userContext);
 
+    const switchNetwork = async (network) => {
+        let chainToSwitch;
+        switch (network){
+            case "optimism":
+                chainToSwitch = Chains.OPTIMISM;
+                break;
+            case "polygon":
+                chainToSwitch = Chains.POLYGON;
+                break;
+            case "boba":
+                chainToSwitch = Chains.BOBA;
+                break;
+            case "cronos":
+                chainToSwitch = Chains.CRONOS;
+                break;
+            case "skale":
+                chainToSwitch = Chains.SKALE;
+                break;
+            case "rinkeby":
+                chainToSwitch = Chains.RINKEBY;
+                break;
+            default:
+                throw new Error(`${network} not supported`);
+        }
+        console.log("switching to", chainToSwitch);
+        await changeNetwork(chainToSwitch);
+        setChain(network);
+    }
 
-    const handleSubmit = (e) => {
+
+    const handleSubmit = async (e) => {
         try{
-            axios.post(`${serverUrl}createUser`, {
-                name: name,
+            const contractAddress = await deploy(wallet.provider);
+
+            const userData = {
+                name,
                 tagline: tagline,
-                links: [],
-                address: address,
+                links: [twitter, facebook, instagram].filter(l => l),
+                address: contractAddress,
                 description: description,
                 photo: picUrl,
                 chain: chain
-            })
-            .then(function (response) {
-                console.log(response.data);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-            setName("")
-            setTagline("")
-            setLinks([])
-            setDescription("")
-            setPicUrl("")
-            setChain("")
+            };
+
+            console.log("Calling", `${serverUrl}createUser`);
+            const call = axios.post(`${serverUrl}createUser`, userData);
+
+            navigate(`/detailView/${contractAddress}`);
+            await call;
         }
         catch(error){
             console.log(error)
@@ -71,39 +105,43 @@ const CreateProfile = () => {
             {/* Creators Form */}
             <Container mb={4} maxW='3xl' centerContent bgColor='#f3f3f3' border='solid 1px #ccc'>
                 <FormControl p={6}>
-                    <FormLabel htmlFor='first-name' fontWeight='semibold'>Set Creator Username</FormLabel>
-                    <Input mb={4} id='first-name' placeholder='Vitalik Buterin' bgColor='white' onChange={e => setName(e.target.value)} />
+                    <FormLabel htmlFor='name' fontWeight='semibold'>Set Creator Username</FormLabel>
+                    <Input mb={4} id='name' placeholder='Vitalik Buterin' bgColor='white' onChange={e => setName(e.target.value)} />
 
                     <FormLabel htmlFor='tagline' fontWeight='semibold'>Set Creator Tagline</FormLabel>
                     <Input onChange={e => setTagline(e.target.value)} mb={4} id='tagline' placeholder='Is saving kittens' bgColor='white' />
 
-                    <FormLabel htmlFor='first-name' fontWeight='semibold'>Set Creator Description</FormLabel>
+                    <FormLabel htmlFor='description' fontWeight='semibold'>Set Creator Description</FormLabel>
                     <Textarea mb={4} rows='4' placeholder='I also do other things, I just like saving kittens and it is really important to me. Join me in my quest to save the kittens.' bgColor='white' onChange={e => setDescription(e.target.value)} />
 
-                    <FormLabel htmlFor='first-name' fontWeight='semibold'>Select Which Asset Users can Stake</FormLabel>
-                    <Select mb={4} placeholder='Select Token' bgColor='#fff'>
-                        <option value='option1'>Ethereum (Polygon)</option>
-                        <option value='option2'>Option 2</option>
+                    <FormLabel htmlFor='first-name' fontWeight='semibold'>Select on Which Chain Users can Stake</FormLabel>
+                    <Select mb={4} placeholder='Select Chain' bgColor='#fff' onChange={e => switchNetwork(e.target.value)}>
+                        <option value='polygon'>Polygon</option>
+                        <option value='optimism'>Optimism</option>
+                        <option value='boba'>Boba</option>
+                        <option value='cronos'>Cronos</option>
+                        <option value='rinkeby'>Rinkeby</option>
+                        <option value='skale' disabled>Skale</option>
                     </Select>
 
-                    <FormLabel htmlFor='first-name' fontWeight='semibold'>Set Profile Pic URL</FormLabel>
-                    <Input mb={4} id='first-name' placeholder='https://yahoo.com/vitalik.jpg' bgColor='white' onChange={e => setPicUrl(e.target.value)} />
+                    <FormLabel htmlFor='picUrl' fontWeight='semibold'>Set Profile Pic URL</FormLabel>
+                    <Input mb={4} id='picUrl' placeholder='https://yahoo.com/vitalik.jpg' bgColor='white' onChange={e => setPicUrl(e.target.value)} />
 
                     <SimpleGrid columns={{ base: 1, md: 2 }}>
                         <Box mr={2}>
                             <Box mb={2} fontWeight='semibold'>Twitter URL</Box>
-                            <Input mb={4} id='first-name' placeholder='twitter.com/vitalik' bgColor='white' />
+                            <Input mb={4} id='first-name' placeholder='twitter.com/vitalik' bgColor='white' onChange={e => setTwitter(e.target.value)} />
                         </Box>
                         <Box>
                             <Box mb={2} fontWeight='semibold'>Facebook URL</Box>
-                            <Input mb={4} id='first-name' placeholder='facebook.com/vitalik' bgColor='white' />
+                            <Input mb={4} id='first-name' placeholder='facebook.com/vitalik' bgColor='white' onChange={e => setFb(e.target.value)}  />
                         </Box>
                     </SimpleGrid>
 
                     <SimpleGrid columns={{ base: 1, md: 2 }}>
                         <Box mr={2}>
                             <Box mb={2} fontWeight='semibold'>Instagram URL</Box>
-                            <Input mb={4} id='first-name' placeholder='instagram.com/vitalik' bgColor='white' />
+                            <Input mb={4} id='first-name' placeholder='instagram.com/vitalik' bgColor='white' onChange={e => setIg(e.target.value)} />
                         </Box>
                     </SimpleGrid>
                 </FormControl>

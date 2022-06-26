@@ -30,8 +30,14 @@ export class BobaWallet extends Wallet {
     }
 }
 
-export const getWalletByType = (type:WalletType):Wallet => {
-    switch (type){
+export class RinkebyWallet extends Wallet {
+    constructor() {
+        super(process.env.RINKEBY_ENDPOINT!, WalletType.rinkeby);
+    }
+}
+
+export const getWalletByType = (type: WalletType): Wallet => {
+    switch (type) {
         case WalletType.optimism:
             return new OptimismWallet();
         case WalletType.polygon:
@@ -42,26 +48,32 @@ export const getWalletByType = (type:WalletType):Wallet => {
             return new SkaleWallet();
         case WalletType.boba:
             return new BobaWallet();
+        case WalletType.rinkeby:
+            return new RinkebyWallet();
     }
     throw new Error(`Wallet ${type} does not exists`)
 }
 
-export async function reportWalletStatuses(): Promise<{name:string, lastBlock:number}[]> {
+export async function reportWalletStatuses(): Promise<{ name: string, lastBlock: number }[]> {
     const wallets: Wallet[] = [
         new OptimismWallet(),
         new PolygonWallet(),
         new CronosWallet(),
         new SkaleWallet(),
-        new BobaWallet()
+        new BobaWallet(),
+        new RinkebyWallet()
     ];
 
-    const promises: Promise<{name:string, lastBlock:number}>[] = [];
+    const promises: Promise<{ name: string, lastBlock: number }>[] = [];
 
     for (const wallet of wallets) {
         promises.push(new Promise(res => {
             wallet.getBlock()
                 .then(nr => res({name: wallet.type.toString(), lastBlock: nr}))
-                .catch(_ => res({name: wallet.type.toString(), lastBlock: -1}));
+                .catch(err => {
+                    console.warn(wallet.type, err);
+                    res({name: wallet.type.toString(), lastBlock: -1})
+                });
         }));
     }
 

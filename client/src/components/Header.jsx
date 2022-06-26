@@ -55,7 +55,7 @@ const Header = (props) => {
                     {optionToCreate && address ?  
                     <Button colorScheme='teal' variant='solid' spacing={4}>
                         <NavLink to="/createProfile">
-                            <Link>Create Profile</Link>
+                            Create Profile
                         </NavLink>
                     </Button>
                     :

@@ -6,7 +6,8 @@ export enum WalletType {
     polygon = "polygon",
     cronos = "cronos",
     skale = "skale",
-    boba = "boba"
+    boba = "boba",
+    rinkeby = "rinkeby"
 }
 
 export const toWalletType = (wallet: string) => {
@@ -22,6 +23,8 @@ export const toWalletType = (wallet: string) => {
             return WalletType.skale;
         case WalletType.boba.toString():
             return WalletType.boba;
+        case WalletType.rinkeby.toString():
+            return WalletType.rinkeby;
         default:
             throw new Error(`Type ${lowerCase} not recognized!`);
     }

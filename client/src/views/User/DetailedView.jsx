@@ -2,9 +2,10 @@ import React from "react";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import axios from 'axios';
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { serverUrl } from "../../services/serverUrl";
+import { userContext } from "../../context/UserContext";
 import {
     Box, 
     Container,
@@ -36,16 +37,25 @@ import {
 const DetailedView = () => {
     const [value, setValue] = React.useState('1')
     const [creator, setCreator] = useState({})
-    let {address} = useParams()
+    const { address, setAddress } = useContext(userContext);
+    let {userAddress} = useParams()
     const { isOpen: isSupportOpen, onOpen: onSupportOpen, onClose: onSupportClose } = useDisclosure()
     const { isOpen: isRemoveOpen, onOpen: onRemoveOpen, onClose: onRemoveClose } = useDisclosure()
+    const [userComments, setUserComments] = useState([])
+    const [otherComments, setOtherComments] = useState([])
 
     useEffect(() => {
         try {
-            axios.get(`${serverUrl}creator?address=${address}`)
+            axios.get(`${serverUrl}creator?address=${userAddress}`)
             .then((response) => {
-                console.log(response.data);
                 setCreator(response.data)
+                response.data.comments.filter((comment)=>{
+                    // seperate curent user and other users NFTS
+                    if(comment.author==address && !userComments.includes(comment)){
+                        setUserComments([...userComments, comment])}
+                    if(comment.author!=address && !otherComments.includes(comment)) {
+                        setOtherComments([...otherComments, comment])
+                    }})
             });
         } catch (error) {
             console.log(error.message)
@@ -54,14 +64,14 @@ const DetailedView = () => {
 
     return (
         <>
-        {console.log(JSON.stringify(creator))}
+        {console.log(userComments)}
+        {console.log(otherComments)}
             <Header optionToCreate={true}/>
             <Container
                     bgColor='#fff'
                     maxW='3xl'
                     centerContent
                     borderRadius='md'
-                    // border="solid 1px #ccc"
                 >
                     <Box pt={6} maxW='lg'>
                         <Image
@@ -73,15 +83,9 @@ const DetailedView = () => {
                     </Box>
                 </Container>
                 <Container maxW='3xl' centerContent>
-                    <Box p={4} maxW='lg' color='black' fontSize='4xl'>
-                        {creator.tagline}
-                    </Box>
                 </Container>
             <Box p={4} mb={4} bgColor='#4791D1'>
                 <Container maxW='3xl' centerContent>
-                    <Box p={4} maxW='lg' color='black'>
-                        {creator.description} 
-                    </Box>
                     <Box
                         p={2}
                         maxW='lg'
@@ -116,19 +120,19 @@ const DetailedView = () => {
                     >
                         {creator.description}
                     </Box>
-                    <Button
-                        mb={6}
-                        color='#fff'
-                        bgColor='#4791D1'
-                        size='lg'
-                        borderRadius='md'
-                        onClick={onSupportOpen}
-                    >
-                        Support {creator.name}
-                    </Button>
+                        <Button
+                            isDisabled={ address ? false : true}
+                            mb={6}
+                            color='#fff'
+                            bgColor='#4791D1'
+                            size='lg'
+                            borderRadius='md'
+                            onClick={onSupportOpen}
+                        >
+                            Support {creator.name}
+                        </Button>
                 </Container>
             </Box>
-
 
             <Container maxW='4xl'>
                 <Flex alignItems='center'>
@@ -157,48 +161,62 @@ const DetailedView = () => {
                 border='solid 1px #ccc'
                 borderRadius='lg'
             >
-                
-                <Box p={4} display='flex' alignItems='center'>
-                    <Image
-                        mr={4}
-                        borderRadius='full'
-                        boxSize='100px'
-                        src='https://bit.ly/dan-abramov'
-                        alt='Dan Abramov'
-                    />
-                    <Box>
-                        <Flex>
-                            <HStack>
-                                <Box
-                                    pl={4}
-                                    color='black'
-                                    fontSize='lg'
-                                    fontWeight='bold'
-                                >
-                                    0x14209
-                                </Box>
-                                <Box>・Has shared Yield</Box>
-                            </HStack>
-                            <Spacer/>
-                            <CloseButton
-                                border='solid 1px #FE0000'
-                                borderRadius='full'
-                                color='#FE0000'
-                                bgColor='#f3f3f3'
-                                onClick={onRemoveOpen}
-                            />
-                        </Flex>
-                        <Box
-                            p={4} 
-                            minW='2xl' 
-                            maxW='2xl' 
-                            color='black'
-                            fontSize='lg'
-                        >
-                            “Hey man, forget the kittens... You’re needed elsewhere!”
+                {/* Users Comment for Creator  */}
+                {userComments.map(comment => {
+                    return (
+                        <Box p={4} display='flex' alignItems='center'>
+                        <Image
+                            mr={4}
+                            borderRadius='full'
+                            boxSize='100px'
+                            src='https://bit.ly/dan-abramov'
+                            alt='Dan Abramov'
+                        />
+                        <Box>
+                            <Flex>
+                                <HStack>
+                                    <Box
+                                        pl={4}
+                                        color='black'
+                                        fontSize='lg'
+                                        fontWeight='bold'
+                                    >
+                                        {comment.author}
+                                    </Box>
+                                    <Box>・Has shared Yield</Box>
+                                </HStack>
+                                <Spacer/>
+                                <CloseButton
+                                    border='solid 1px #FE0000'
+                                    borderRadius='full'
+                                    color='#FE0000'
+                                    bgColor='#f3f3f3'
+                                    onClick={onRemoveOpen}
+                                />
+                            </Flex>
+                            <Box
+                                p={4} 
+                                minW='2xl' 
+                                maxW='2xl' 
+                                color='black'
+                                fontSize='lg'
+                            >
+                                {comment.text}
+                            </Box>
+                            <Box
+                                p={4} 
+                                minW='2xl' 
+                                maxW='2xl' 
+                                color='black'
+                                fontSize='lg'
+                            >
+                                Duration: {comment.duration} months
+                            </Box>
                         </Box>
                     </Box>
-                </Box>
+                    )
+                })
+                } 
             </Container>
 
 
@@ -212,6 +230,8 @@ const DetailedView = () => {
                     {creator.name}’s Recent Supporters
                 </Box>
             </Container>
+
+            {/* Other Supporting Users for Creator */}
             <Container
                 p={4}
                 maxW='4xl' 
@@ -219,7 +239,8 @@ const DetailedView = () => {
                 border='solid 1px #ccc'
                 borderRadius='lg'
             >
-                <Box p={4} display='flex' alignItems='center'>
+                {otherComments.map((comment) => {return (
+                    <Box p={4} display='flex' alignItems='center'>
                     <Image
                         mr={4}
                         borderRadius='full'
@@ -235,7 +256,7 @@ const DetailedView = () => {
                                 fontSize='lg'
                                 fontWeight='bold'
                             >
-                                0x13337
+                                {comment.author}
                             </Box>
                             <Box>・Has shared Yield</Box>
                         </HStack>
@@ -246,51 +267,25 @@ const DetailedView = () => {
                             color='black'
                             fontSize='lg'
                         >
-                            “Hey there, keep up the good work with the Kittens."
+                            {comment.text}
+                        </Box>
+                        <Box
+                                p={4} 
+                                minW='2xl' 
+                                maxW='2xl' 
+                                color='black'
+                                fontSize='lg'
+                            >
+                                Duration: {comment.duration} months
+                            </Box>
                         </Box>
                     </Box>
-                </Box>
+                )})}
+                
             </Container>
 
-            <Container
-                p={4}
-                maxW='4xl' 
-                centerContent
-                border='solid 1px #ccc'
-                borderRadius='lg'
-            >
-                <Box p={4} display='flex' alignItems='center'>
-                    <Image
-                        mr={4}
-                        borderRadius='full'
-                        boxSize='100px'
-                        src='https://bit.ly/dan-abramov'
-                        alt='Dan Abramov'
-                    />
-                    <Box>
-                        <HStack>
-                            <Box
-                                pl={4}
-                                color='black'
-                                fontSize='lg'
-                                fontWeight='bold'
-                            >
-                                0x12342
-                            </Box>
-                            <Box>・Has shared Yield</Box>
-                        </HStack>
-                        <Box
-                            p={4} 
-                            minW='2xl' 
-                            maxW='2xl' 
-                            color='black'
-                            fontSize='lg'
-                        >
-                            “Hey man, forget the kittens... You’re needed elsewhere!”
-                        </Box>
-                    </Box>
-                </Box>
-            </Container>
+                        
+            {/* Staking Modal  */}
             
             <Modal
                 isOpen={isSupportOpen} 
@@ -406,6 +401,9 @@ const DetailedView = () => {
                     </ModalFooter>
                 </ModalContent>
             </Modal>
+
+
+            {/* Remove Stake Modal */}
 
             <Modal
                 isOpen={isRemoveOpen}
