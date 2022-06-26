@@ -105,13 +105,13 @@ const CreateProfile = () => {
             {/* Creators Form */}
             <Container mb={4} maxW='3xl' centerContent bgColor='#f3f3f3' border='solid 1px #ccc'>
                 <FormControl p={6}>
-                    <FormLabel htmlFor='first-name' fontWeight='semibold'>Set Creator Username</FormLabel>
-                    <Input mb={4} id='first-name' placeholder='Vitalik Buterin' bgColor='white' onChange={e => setName(e.target.value)} />
+                    <FormLabel htmlFor='name' fontWeight='semibold'>Set Creator Username</FormLabel>
+                    <Input mb={4} id='name' placeholder='Vitalik Buterin' bgColor='white' onChange={e => setName(e.target.value)} />
 
                     <FormLabel htmlFor='tagline' fontWeight='semibold'>Set Creator Tagline</FormLabel>
                     <Input onChange={e => setTagline(e.target.value)} mb={4} id='tagline' placeholder='Is saving kittens' bgColor='white' />
 
-                    <FormLabel htmlFor='first-name' fontWeight='semibold'>Set Creator Description</FormLabel>
+                    <FormLabel htmlFor='description' fontWeight='semibold'>Set Creator Description</FormLabel>
                     <Textarea mb={4} rows='4' placeholder='I also do other things, I just like saving kittens and it is really important to me. Join me in my quest to save the kittens.' bgColor='white' onChange={e => setDescription(e.target.value)} />
 
                     <FormLabel htmlFor='first-name' fontWeight='semibold'>Select on Which Chain Users can Stake</FormLabel>
@@ -124,8 +124,8 @@ const CreateProfile = () => {
                         <option value='skale' disabled>Skale</option>
                     </Select>
 
-                    <FormLabel htmlFor='first-name' fontWeight='semibold'>Set Profile Pic URL</FormLabel>
-                    <Input mb={4} id='first-name' placeholder='https://yahoo.com/vitalik.jpg' bgColor='white' onChange={e => setPicUrl(e.target.value)} />
+                    <FormLabel htmlFor='picUrl' fontWeight='semibold'>Set Profile Pic URL</FormLabel>
+                    <Input mb={4} id='picUrl' placeholder='https://yahoo.com/vitalik.jpg' bgColor='white' onChange={e => setPicUrl(e.target.value)} />
 
                     <SimpleGrid columns={{ base: 1, md: 2 }}>
                         <Box mr={2}>

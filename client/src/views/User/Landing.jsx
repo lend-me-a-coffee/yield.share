@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import Header from "../../components/Header";
-import { Box, SimpleGrid, Image, Center, Text, Link, Container, Button, HStack } from '@chakra-ui/react';
+import { Box, SimpleGrid, Image, Center, Text, Container, Button, HStack } from '@chakra-ui/react';
 import { useState } from "react";
 import axios from 'axios';
 import { serverUrl } from "../../services/serverUrl";

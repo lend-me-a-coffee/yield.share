@@ -43,8 +43,9 @@ const LoginBttn = () => {
 
 
     const refreshState = () => {
-        setAddress();
-        setChainId();
+        setAddress("");
+        setChainId("");
+        setIsCreator(false)
     };
 
 
