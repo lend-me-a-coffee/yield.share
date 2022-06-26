@@ -1,12 +1,18 @@
 import cors from "cors";
 import "dotenv/config";
 import express from "express";
-import {fetchAllUsers} from "./creators";
+import {fetchAllUsers, generateCommentMetadata} from "./creators";
+import bodyParser from "body-parser";
 import {reportWalletStatuses} from "./blockchain/Wallets";
+import {uploadComment} from "./blockchain/metadata";
 
 const app = express();
 
 app.use(cors());
+
+const jsonParser = bodyParser.json();
+
+app.use(jsonParser);
 
 app.use("/", express.static("./client/build"));
 
@@ -14,11 +20,21 @@ app.use("/health", (_, res) => {
     res.send("Ok");
 });
 
-
 app.get("/api/listCreators", async (req, res) => {
     const creators = await fetchAllUsers();
     res.json(creators);
 })
+
+app.post("/api/uploadComment", async (req, res, next) => {
+    try {
+        const metadata = await generateCommentMetadata(req.body);
+        const ipfsHash = await uploadComment(metadata);
+        res.send(ipfsHash);
+    } catch (e) {
+        console.error(e);
+        next(e);
+    }
+});
 
 app.get("/api/wallets", (req, res, next) => {
     req.setTimeout(30000);
