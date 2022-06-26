@@ -26,7 +26,7 @@ function App() {
             <Routes>
               {/* update params as needed */}
                 <Route path="/" element={<Landing/>}/>
-                <Route path="/detailView/:contractAddress" element={<DetailedView/>}/>
+                <Route path="/detailView/:address" element={<DetailedView/>}/>
                 <Route path="/createStake" element={<CreateStake/>}/>
                 <Route path="/loading" element={<Loading/>}/>  
                 <Route path="/stakeSuccess" element={<StakeSuccess/>} />    

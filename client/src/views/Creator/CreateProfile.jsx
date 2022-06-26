@@ -9,24 +9,48 @@ import {
 import { Box, Container } from '@chakra-ui/react';
 import Header from "../../components/Header";
 import { useState } from "react";
+import { userContext } from "../../context/UserContext";
+import axios from 'axios';
+import { useContext } from "react";
+import { serverUrl } from "../../services/serverUrl";
+
 
 const CreateProfile = () => {
-    const [firstName, setFirstName] = useState("")
+    const [name, setName] = useState("")
+    const [tagLine, setTagLine] = useState("")
+    const [links, setLinks] = useState([])
     const [description, setDescription] = useState("")
     const [picUrl, setPicUrl] = useState("")
+    const [chain, setChain] = useState("polygon")
+    const { address, setAddress } = useContext(userContext);
+
 
     const handleSubmit = (e) => {
-        e.preventDefault();
         try{
-            //send to prisma
-            setFirstName("")
+            axios.post(`${serverUrl}createUser`, {
+                name: name,
+                tagline: tagLine,
+                links: [],
+                address: address,
+                description: description,
+                photo: picUrl,
+                chain: chain
+            })
+            .then(function (response) {
+                console.log(response.data);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+            setName("")
+            setTagLine("")
+            setLinks([])
             setDescription("")
             setPicUrl("")
         }
         catch(error){
             console.log(error)
         }
-
     }
 
     return (
@@ -41,18 +65,17 @@ const CreateProfile = () => {
                 <FormControl p={4}>
                     <FormLabel htmlFor='first-name'>First name</FormLabel>
                     <Input  
-                        onChange={e => setFirstName(e.target.value)} 
+                        onChange={e => setName(e.target.value)} 
                         mb={4} 
-                        id='first-name' 
                         bgColor='white' />
-                    <FormLabel htmlFor='first-name'>Description</FormLabel>
+                    <FormLabel htmlFor='description'>Description</FormLabel>
                     <Textarea 
                         mb={4} 
                         rows='6'
                         bgColor='white' 
                         onChange={e => setDescription(e.target.value)}
                     />
-                    <FormLabel htmlFor='first-name'>Profile Pic URL</FormLabel>
+                    <FormLabel htmlFor='picUrl'>Profile Pic URL</FormLabel>
                     <Textarea 
                         mb={4} 
                         bgColor='white' 

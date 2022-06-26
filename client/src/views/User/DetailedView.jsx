@@ -11,7 +11,7 @@ import {
     ModalFooter,
     ModalBody,
     ModalCloseButton,
-  } from '@chakra-ui/react'
+} from '@chakra-ui/react'
 import { useDisclosure } from '@chakra-ui/react'
 import {
     NumberInput,
@@ -19,17 +19,37 @@ import {
     NumberInputStepper,
     NumberIncrementStepper,
     NumberDecrementStepper,
-  } from '@chakra-ui/react'
+} from '@chakra-ui/react'
 import { Select } from '@chakra-ui/react'
 import { Radio, RadioGroup } from '@chakra-ui/react'
 import { Textarea } from '@chakra-ui/react'
+import axios from 'axios';
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { useState } from "react";
+import { serverUrl } from "../../services/serverUrl";
 
 const DetailedView = () => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [value, setValue] = React.useState('1')
+    const [creator, setCreator] = useState({})
+    let {address} = useParams()
+
+    useEffect(() => {
+        try {
+            axios.get(`${serverUrl}creator?address=${address}`)
+            .then((response) => {
+                console.log(response.data);
+                setCreator(response.data)
+            });
+        } catch (error) {
+            console.log(error)
+        }
+    }, [])
 
     return (
         <>
+        {console.log(creator)}
             <Header optionToCreate={true}/>
             <Box p={4}>
                 <Container maxW='3xl' centerContent>
@@ -37,19 +57,19 @@ const DetailedView = () => {
                         <Image
                             borderRadius='full'
                             boxSize='150px'
-                            src='https://bit.ly/dan-abramov'
-                            alt='Dan Abramov'
+                            src={creator.photo}
+                            alt={creator.name}
                         />
                     </Box>
                 </Container>
                 <Container maxW='3xl' centerContent>
                     <Box p={4} maxW='lg' color='black' fontSize='4xl'>
-                        Best Food Creator
+                        {creator.tagline}
                     </Box>
                 </Container>
                 <Container maxW='3xl' centerContent>
                     <Box p={4} maxW='lg' color='black'>
-                        I create the best food. and I create the best food. I create the best food. I create the best food. I create the best food. I create the best food. I create the best food. I create the best food. I create the best food. I create the best food.
+                        {creator.description}
                     </Box>
                 </Container>
                 <Container p={6} mb={6} maxW='3xl' centerContent>
