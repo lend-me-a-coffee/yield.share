@@ -1,0 +1,1 @@
+export const serverUrl =  "https://lend-me-a-coffee-production.up.railway.app/api/"
