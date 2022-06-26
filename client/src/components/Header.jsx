@@ -12,13 +12,17 @@ import {
     useColorMode,
     } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon, MoonIcon, SunIcon } from '@chakra-ui/icons';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import LoginBttn from "./LoginBttn"
+import { userContext } from "../context/UserContext";
+
 
 const Header = (props) => {
-    const [isLogggedIn, setIsLogggedIn] = useState(false)
     const { isOpen, onOpen, onClose } = useDisclosure();
     const { colorMode, toggleColorMode } = useColorMode();
-    const {optionToCreate} = props;
+    const {optionToCreate, account} = props;
+    const { address, setAddress } = useContext(userContext);
+
 
     return (
         <>
@@ -38,13 +42,15 @@ const Header = (props) => {
                     spacing={4}
                     display={{ base: 'none', md: 'flex' }}>
                     </HStack>
+                    <Link href="/">Home</Link>
                 </HStack>
                 <Flex alignItems={'center'}>
-                    {optionToCreate ?  
+                    {optionToCreate && address ?  
                     <Button colorScheme='teal' variant='solid' spacing={4}><Link href="/createProfile" >Create Profile</Link></Button>
                     :
                     null}
-                    <Button onClick={toggleColorMode}  size={'sm'} variant='ghost'>
+                    <LoginBttn/>
+                    <Button onClick={toggleColorMode}  size={'sm'} variant='link'>
                         {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
                     </Button>
                 </Flex>

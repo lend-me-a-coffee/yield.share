@@ -9,13 +9,20 @@ import StakeSuccess from "./views/User/StakeSuccess"
 import ProfileSuccess from './views/Creator/ProfileSuccess';
 import DetailedView from "./views/User/DetailedView";
 import NotFound from './views/User/NotFound';
+import { userContext } from './context/UserContext';
+import { useState } from 'react';
 
 
 
 function App() {
+  const [address, setAddress] = useState("");
+  const value = { address, setAddress };
+
+
   return (
     <div>
-      <ChakraProvider>           
+      <ChakraProvider> 
+      <userContext.Provider value={value}>          
             <Routes>
               {/* update params as needed */}
                 <Route path="/" element={<Landing/>}/>
@@ -28,8 +35,9 @@ function App() {
                 <Route path="/profileSuccess" element={<ProfileSuccess/>} />
                 <Route path="*" element={<NotFound/>}/>
             </Routes>
+            </userContext.Provider>
         </ChakraProvider>
-    </div>
+      </div>
   );
 }
 

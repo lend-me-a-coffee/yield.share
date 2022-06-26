@@ -1,6 +1,9 @@
+import Header from "../../components/Header";
+
 const NotFound = () => {
     return (
         <>
+            <Header optionToCreate={false}/>
             <h1>Page not found</h1>
         </>
     )

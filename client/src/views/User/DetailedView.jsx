@@ -1,5 +1,7 @@
 // detailed view of selected creator profile
 import React from "react";
+import Header from "../../components/Header";
+
 import { Box, Container, Image, Button, Flex, Text, Spacer } from '@chakra-ui/react';
 import {
     Modal,
@@ -28,7 +30,7 @@ const DetailedView = () => {
 
     return (
         <>
-            <h1>Detailed View</h1>
+            <Header optionToCreate={true}/>
             <Box p={4}>
                 <Container maxW='3xl' centerContent>
                     <Box p={4} maxW='lg'>
