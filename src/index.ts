@@ -1,6 +1,7 @@
 import cors from "cors";
 import "dotenv/config";
 import express from "express";
+import {fetchAllUsers} from "./creators";
 import {reportWalletStatuses} from "./blockchain/Wallets";
 
 const app = express();
@@ -13,6 +14,11 @@ app.use("/health", (_, res) => {
     res.send("Ok");
 });
 
+
+app.get("/api/listCreators", async (req, res) => {
+    const creators = await fetchAllUsers();
+    res.json(creators);
+})
 
 app.get("/api/wallets", (req, res, next) => {
     req.setTimeout(30000);
