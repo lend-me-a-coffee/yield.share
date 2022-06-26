@@ -9,12 +9,12 @@ import {
     FormControl,
     FormLabel,
     Input,
-    Textarea, 
-    Button, 
-    Box, 
-    Container, 
-    Select, 
-    Image, 
+    Textarea,
+    Button,
+    Box,
+    Container,
+    Select,
+    Image,
     SimpleGrid
 } from '@chakra-ui/react'
 import {useWallet} from "../../context/Wallet";
@@ -56,6 +56,9 @@ const CreateProfile = () => {
             case "skale":
                 chainToSwitch = Chains.SKALE;
                 break;
+            case "rinkeby":
+                chainToSwitch = Chains.RINKEBY;
+                break;
             default:
                 throw new Error(`${network} not supported`);
         }
@@ -67,30 +70,23 @@ const CreateProfile = () => {
 
     const handleSubmit = async (e) => {
         try{
-            const contractAddress = "0x4a704da40706249a2ac1c469F2asdasdasd";
-            // const contractAddress = await deploy(wallet.provider);
+            const contractAddress = await deploy(wallet.provider);
 
             const userData = {
                 name,
                 tagline: tagline,
-                links: [twitter, facebook, instagram],
+                links: [twitter, facebook, instagram].filter(l => l),
                 address: contractAddress,
                 description: description,
                 photo: picUrl,
                 chain: chain
             };
 
-            await axios.post(`${serverUrl}createUser`, userData)
-            .then(function (response) {
-                console.log(response.data);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-            setTagline("")
-            setDescription("")
-            setPicUrl("")
-            navigate(`../detailView/${contractAddress}`);
+            console.log("Calling", `${serverUrl}createUser`);
+            const call = axios.post(`${serverUrl}createUser`, userData);
+
+            navigate(`/detailView/${contractAddress}`);
+            await call;
         }
         catch(error){
             console.log(error)
@@ -124,6 +120,7 @@ const CreateProfile = () => {
                         <option value='optimism'>Optimism</option>
                         <option value='boba'>Boba</option>
                         <option value='cronos'>Cronos</option>
+                        <option value='rinkeby'>Rinkeby</option>
                         <option value='skale' disabled>Skale</option>
                     </Select>
 
