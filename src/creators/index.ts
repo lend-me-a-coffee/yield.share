@@ -68,9 +68,11 @@ export async function generateCommentMetadata(input: CommentInput): Promise<Comm
         throw new Error(`Creator ${input.creatorAddress} not found!`);
     }
 
+    const external_url: string = process.env.RAILWAY_STATIC_URL ? `${process.env.RAILWAY_STATIC_URL}/detailView/${input.creatorAddress}` : "";
+
     return {
         description: `Comment for creator ${input.creatorAddress}`,
-        external_url: "",
+        external_url,
         image: creator.photo,
         name: input.comment,
         attributes: [
