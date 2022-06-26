@@ -27,7 +27,6 @@ const LoginBttn = () => {
             const network = await library.getNetwork();
             if (accounts) setAddress(accounts[0]);
             setChainId(network.chainId);
-            const sign = library.getSigner();
 
             wallet.setAddress(accounts[0], library.getSigner());
         } catch (error) {
@@ -45,7 +44,6 @@ const LoginBttn = () => {
     const refreshState = () => {
         setAddress("");
         setChainId("");
-        setIsCreator(false)
     };
 
 
