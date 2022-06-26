@@ -43,7 +43,7 @@ contract Comment is ERC721, ERC721URIStorage, ERC721Burnable, Ownable {
         if (stakers[id].deadline > block.timestamp) {
             _burn(id);
         } else {
-            safeTransferFrom(address(this), staker, id);
+            _transfer(address(this), staker, id);
         }
 
         return amount;
