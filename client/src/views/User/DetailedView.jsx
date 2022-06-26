@@ -31,11 +31,11 @@ import {
     Radio, 
     Textarea
 } from '@chakra-ui/react'
+import {StakeModal} from "./StakeModal";
 
 
 
 const DetailedView = () => {
-    const [value, setValue] = React.useState('1')
     const [creator, setCreator] = useState({})
     const { address, setAddress } = useContext(userContext);
     let {userAddress} = useParams()
@@ -51,11 +51,12 @@ const DetailedView = () => {
                 setCreator(response.data)
                 response.data.comments.filter((comment)=>{
                     // seperate curent user and other users NFTS
-                    if(comment.author==address && !userComments.includes(comment)){
-                        setUserComments([...userComments, comment])}
-                    if(comment.author!=address && !otherComments.includes(comment)) {
+                    if(comment.author!=address && !userComments.includes(comment)){
+                        setUserComments([...userComments, comment])
+                    }
+
                         setOtherComments([...otherComments, comment])
-                    }})
+                    })
             });
         } catch (error) {
             console.log(error.message)
@@ -305,76 +306,7 @@ const DetailedView = () => {
                     </ModalHeader>
                     <ModalCloseButton />
                     <ModalBody p={6}>
-                        <Box
-                            bgColor='#f3f3f3'
-                            mr={6} ml={6} p={10}
-                        >
-                            <SimpleGrid columns={{ base: 1, md: 2 }} mb={4}>
-                                <Box>
-                                    <Box mb={2} fontWeight='semibold'>Select Amount</Box>
-                                    <NumberInput
-                                        mr={2}
-                                        defaultValue={1}
-                                        min={0}
-                                    >
-                                        <NumberInputField placeholder='Amount' bgColor='#fff' />
-                                    </NumberInput>
-                                </Box>
-                                <Box>
-                                    <Box mb={2} fontWeight='semibold'>Select Asset</Box>
-                                    <Box
-                                        p={2} 
-                                        color='#000' 
-                                        borderRadius='md' 
-                                        border='solid 1px #ccc'
-                                        align='center'
-                                        fontWeight='semibold'
-                                    >
-                                        Ethereum
-                                    </Box>
-                                </Box>
-                            </SimpleGrid>
-
-                            <Box mb={2} fontWeight='semibold'>Set Staking Duration</Box>
-                            <Box
-                                p={6} mb={4}
-                                bgColor='#fff'
-                                border='solid 1px #e2e8f0'
-                                borderRadius='md'
-                            >
-                                <RadioGroup
-                                    onChange={setValue} 
-                                    value={value}
-                                >
-                                    <Flex>
-                                        <Radio value='1'>1 month</Radio>
-                                        <Spacer />
-                                        <Radio value='2'>3 months</Radio>
-                                        <Spacer />
-                                        <Radio value='3'>6 months</Radio>
-                                    </Flex>
-                                </RadioGroup>
-                            </Box>
-                            
-                            <Box mb={2} fontWeight='semibold'>Add Support Comment</Box>
-                            <Textarea
-                                mb={4}
-                                placeholder="Keep up the good work! We're rooting for you!"
-                                bgColor='#fff'
-                            />
-
-                            <Box align='center'>
-                                <Button
-                                    onClick={onSupportClose}
-                                    borderRadius='md'
-                                    size='lg'
-                                    bgColor='#4791D1'
-                                    color='#fff'
-                                >
-                                    Confirm Staking Assets
-                                </Button>
-                            </Box>
-                        </Box>
+                        <StakeModal onSupportClose={onSupportClose} contractAddress={userAddress}/>
                     </ModalBody>
                     <ModalFooter>
                         <Container mb={4} maxW='xl' centerContent>
