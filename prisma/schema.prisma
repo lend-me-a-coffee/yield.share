@@ -19,3 +19,11 @@ model Creator {
   photo       String
   links       String[]
 }
+
+model Comment {
+  address    String @id @map("_id")
+  text       String
+  author     String
+  amount     Int
+  duration   Int
+}
