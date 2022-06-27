@@ -22,8 +22,9 @@ model Creator {
 
 model Comment {
   address    String @id @map("_id")
+  tokenId    Int
   text       String
-  author     String
+  author     String?
   amount     Int
   duration   Int
 }

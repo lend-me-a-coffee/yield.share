@@ -20,9 +20,10 @@ export interface Creator {
 
 export interface Comment {
     text: string;
-    author: string;
-    amount?: number;
-    duration?: number;
+    author?: string;
+    amount: number;
+    duration: number;
+    id: number;
 }
 
 export interface CommentInput {
@@ -30,6 +31,7 @@ export interface CommentInput {
     comment: string;
     amount: number;
     duration: number;
+    author: string;
 }
 
 export interface CreatorData extends Creator {
@@ -75,6 +77,8 @@ export async function generateCommentMetadata(input: CommentInput): Promise<Comm
         external_url,
         image: creator.photo,
         name: input.comment,
+        creator: input.creatorAddress,
+        author: input.author,
         attributes: [
             {trait_type: "duration", value: input.duration},
             {trait_type: "staked amount", value: input.amount}

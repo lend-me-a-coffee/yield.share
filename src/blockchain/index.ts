@@ -1,6 +1,8 @@
 export interface CommentMetadata {
     name:string;
-    external_url:string;
+    creator?: string;
+    author: string;
+    external_url?:string;
     image:string;
     description:string;
     attributes: {trait_type:string;value:number}[];

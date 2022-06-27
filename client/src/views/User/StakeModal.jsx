@@ -27,7 +27,8 @@ export const StakeModal = ({onSupportClose, contractAddress}) => {
             comment: comment,
             creatorAddress: contractAddress,
             amount: Number(amount),
-            duration: Number(value)
+            duration: Number(value),
+            author: wallet.address
         };
 
         console.log("data", data);

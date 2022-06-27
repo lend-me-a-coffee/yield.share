@@ -1,4 +1,4 @@
-import {IWallet, WalletType} from "./Wallet";
+import {IWallet, TokenData, WalletType} from "./Wallet";
 import axios from "axios";
 
 export class TatumWallet implements IWallet {
@@ -29,20 +29,24 @@ export class TatumWallet implements IWallet {
         }
     }
 
-    async getAllNftMetadata(contractAddress: string): Promise<string[]> {
+    async getAllNftMetadata(contractAddress: string): Promise<TokenData[]> {
         const query = new URLSearchParams({
             pageSize: "50",
             offset: "0"
         }).toString();
+        console.log("fetching", `https://api-eu1.tatum.io/v3/nft/collection/${this.chain}/${contractAddress}?${query}`, this.headers);
         const fetch = await axios.get(`https://api-eu1.tatum.io/v3/nft/collection/${this.chain}/${contractAddress}?${query}`, this.headers);
 
         if (fetch.data) {
-            type metadata = {tokenId:string, metadata: { url: string, metadata: Record<string, string>, tokenId: string }};
+            type metadata = { tokenId: string, metadata: { url: string, metadata: Record<string, string>, tokenId: string } };
             const data: metadata[] = fetch.data;
-            return data.map(d => d.metadata.url);
+            return data.map(d => {
+                return {id: Number(d.tokenId), url: d.metadata.url}
+            });
         }
 
-        return fetch.data;
+        console.warn("No data for", contractAddress);
+        return [];
     }
 
     async getNFT(token: number, contractAddress: string): Promise<string> {

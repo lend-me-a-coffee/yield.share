@@ -35,7 +35,9 @@ export interface IWallet {
     type: WalletType;
     getNFT(token: number, contractAddress: string): Promise<string>;
 
-    getAllNftMetadata(contractAddress: string): Promise<string[]>;
+    getAllNftMetadata(contractAddress: string): Promise<TokenData[]>;
 
     getBlock(): Promise<number>;
 }
+
+export interface TokenData {id:number, url:string};
