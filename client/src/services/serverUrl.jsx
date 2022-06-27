@@ -1,1 +1,1 @@
-export const serverUrl = process.env.RAILWAY_STATIC_URL ? "/" : "https://lend-me-a-coffee-production.up.railway.app/api/";
+export const serverUrl = process.env.RAILWAY_STATIC_URL ? "/" : "https://yieldshare-production.up.railway.app/api/";
