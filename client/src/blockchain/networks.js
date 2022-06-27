@@ -1,7 +1,7 @@
 import {ethers} from "ethers";
 
 export const Chains = {
-    POLYGON: 137,
+    POLYGON: 80001,
     OPTIMISM: 10,
     CRONOS: 338,
     BOBA: 28,
