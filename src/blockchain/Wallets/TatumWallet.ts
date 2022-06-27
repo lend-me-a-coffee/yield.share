@@ -1,0 +1,52 @@
+import {IWallet, WalletType} from "./Wallet";
+import axios from "axios";
+
+export class TatumWallet implements IWallet {
+    private readonly chain: "ETH" | "MATIC";
+    private readonly headers: Record<string, string | Record<string, string>>;
+
+    constructor(public readonly type: WalletType) {
+        switch (type) {
+            case WalletType.rinkeby:
+                this.chain = "ETH";
+                this.headers = {
+                    headers: {
+                        "x-testnet-type": "ethereum-rinkeby",
+                        "x-api-key": process.env.TATUM_API!
+                    }
+                };
+                break;
+            case WalletType.polygon:
+                this.chain = "MATIC";
+                this.headers = {
+                    headers: {
+                        "x-api-key": process.env.TATUM_API!
+                    }
+                };
+                break;
+            default:
+                throw new Error(`Network ${type} is not supported by Tatum.io!`);
+        }
+    }
+
+    async getAllNftMetadata(contractAddress: string): Promise<string[]> {
+        const query = new URLSearchParams({
+            pageSize: "50",
+            offset: "0"
+        }).toString();
+        const fetch = await axios.get(`https://api-eu1.tatum.io/v3/nft/collection/${this.chain}/${contractAddress}?${query}`, this.headers);
+
+        return fetch.data;
+    }
+
+    async getNFT(token: number, contractAddress: string): Promise<string> {
+        const fetch = await axios.get(`https://api-eu1.tatum.io/v3/nft/metadata/${this.chain}/${contractAddress}/${token}`, this.headers);
+        return fetch.data;
+    }
+
+    async getBlock(): Promise<number> {
+        const chainName = this.chain == "ETH" ? "ethereum" : "polygon";
+        const fetch = await axios.get(`https://api-eu1.tatum.io/v3/${chainName}/block/current`, this.headers);
+        return fetch.data;
+    }
+}

@@ -1,42 +1,44 @@
-import {Wallet, WalletType} from "./Wallet";
+import {IWallet, WalletType} from "./Wallet";
+import {EthersWallet} from "./EthersWallet";
+import {TatumWallet} from "./TatumWallet";
 
-export class OptimismWallet extends Wallet {
+export class OptimismWallet extends EthersWallet {
     constructor() {
         super(process.env.OPTIMISM_ENDPOINT!, WalletType.optimism);
     }
 }
 
-export class PolygonWallet extends Wallet {
+export class PolygonWallet extends TatumWallet {
     constructor() {
-        super(process.env.POLYGON_ENDPOINT!, WalletType.polygon);
+        super(WalletType.polygon);
     }
 }
 
-export class CronosWallet extends Wallet {
+export class CronosWallet extends EthersWallet {
     constructor() {
         super(process.env.CRONOS_ENDPOINT!, WalletType.cronos);
     }
 }
 
-export class SkaleWallet extends Wallet {
+export class SkaleWallet extends EthersWallet {
     constructor() {
         super(process.env.SKALE_ENDPOINT!, WalletType.skale);
     }
 }
 
-export class BobaWallet extends Wallet {
+export class BobaWallet extends EthersWallet {
     constructor() {
         super(process.env.BOBA_ENDPOINT!, WalletType.boba);
     }
 }
 
-export class RinkebyWallet extends Wallet {
+export class RinkebyWallet extends TatumWallet {
     constructor() {
-        super(process.env.RINKEBY_ENDPOINT!, WalletType.rinkeby);
+        super(WalletType.rinkeby);
     }
 }
 
-export const getWalletByType = (type: WalletType): Wallet => {
+export const getWalletByType = (type: WalletType): IWallet => {
     switch (type) {
         case WalletType.optimism:
             return new OptimismWallet();
@@ -55,7 +57,7 @@ export const getWalletByType = (type: WalletType): Wallet => {
 }
 
 export async function reportWalletStatuses(): Promise<{ name: string, lastBlock: number }[]> {
-    const wallets: Wallet[] = [
+    const wallets: IWallet[] = [
         new OptimismWallet(),
         new PolygonWallet(),
         new CronosWallet(),
