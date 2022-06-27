@@ -3,13 +3,11 @@ import "dotenv/config";
 import express from "express";
 import {createUser, Creator, CreatorData, fetchAllUsers, fetchUser, generateCommentMetadata} from "./creators";
 import bodyParser from "body-parser";
-import {getWalletByType, reportWalletStatuses} from "./blockchain/Wallets/Wallets";
+import {reportWalletStatuses} from "./blockchain/Wallets/Wallets";
 import {uploadComment} from "./blockchain/metadata";
-import {toWalletType, WalletType} from "./blockchain/Wallets/Wallet";
-import {fetchData} from "./blockchain/ipfsApi";
 import NodeCache from "node-cache";
-import {CommentMetadata} from "./blockchain";
 import path from "path";
+import {CreatorManager} from "./creators/Creator";
 
 const app = express();
 
@@ -58,20 +56,11 @@ app.get("/api/creator", async (req, res, next) => {
         if (!user) {
             return res.status(404);
         }
-        const type: WalletType = toWalletType(user.chain);
-        const wallet = getWalletByType(type);
-        const nfts = await wallet.getAllNftMetadata(address);
-        const nftMetadata = await Promise.all(nfts.map(ci => fetchData<CommentMetadata>(ci)));
-        const parsedMetadata = nftMetadata.map(nft => {
-            return {
-                text: nft.name,
-                author: address,
-                amount: nft.attributes.find(a => a.trait_type === "staked amount")?.value,
-                duration: nft.attributes.find(a => a.trait_type === "duration")?.value,
-            }
-        });
 
-        const userData: CreatorData = {...user, comments: parsedMetadata};
+        const creator = new CreatorManager(user);
+        const comments = await creator.getComments();
+
+        const userData: CreatorData = {...user, comments};
         cache.set(address, userData);
         return res.json(userData);
     } catch (e) {

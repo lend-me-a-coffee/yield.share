@@ -18,7 +18,7 @@ export interface Creator {
     chain: string;
 }
 
-interface Comment {
+export interface Comment {
     text: string;
     author: string;
     amount?: number;
