@@ -36,6 +36,12 @@ export class TatumWallet implements IWallet {
         }).toString();
         const fetch = await axios.get(`https://api-eu1.tatum.io/v3/nft/collection/${this.chain}/${contractAddress}?${query}`, this.headers);
 
+        if (fetch.data) {
+            type metadata = {tokenId:string, metadata: { url: string, metadata: Record<string, string>, tokenId: string }};
+            const data: metadata[] = fetch.data;
+            return data.map(d => d.metadata.url);
+        }
+
         return fetch.data;
     }
 

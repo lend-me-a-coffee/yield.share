@@ -27,6 +27,10 @@ export const toWalletType = (wallet: string) => {
     }
 }
 
+export const isTatumWallet = (wallet: IWallet) => {
+    return wallet.type === WalletType.rinkeby || wallet.type === WalletType.polygon;
+}
+
 export interface IWallet {
     type: WalletType;
     getNFT(token: number, contractAddress: string): Promise<string>;

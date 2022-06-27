@@ -13,14 +13,20 @@ export async function storeFile(filePath: string) {
 }
 
 export async function fetchData<T>(cid: string):Promise<T> {
-    const config = {
-        headers: {
-            "x-api-key": process.env.TATUM_API!
-        }
-    };
+    try {
+        const config = {
+            headers: {
+                "x-api-key": process.env.TATUM_API!
+            }
+        };
 
-    const call = await axios.get(`https://api-eu1.tatum.io/v3/ipfs/${cid}`, config);
-    return call.data as T;
+        const call = await axios.get(`https://api-eu1.tatum.io/v3/ipfs/${cid}`, config);
+        return call.data as T;
+    }
+    catch (e) {
+        console.error("Failed with cid", cid);
+        throw e;
+    }
 }
 
 async function fileFromPath(filePath: string) {
