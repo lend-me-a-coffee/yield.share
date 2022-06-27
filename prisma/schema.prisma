@@ -25,6 +25,6 @@ model Comment {
   tokenId    Int
   text       String
   author     String?
-  amount     Int
+  amount     Float
   duration   Int
 }

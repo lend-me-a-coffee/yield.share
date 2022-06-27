@@ -40,7 +40,15 @@ export class CreatorManager {
 
     private async saveCommentInDatabase(comment: Comment, hash: string): Promise<void> {
         await prisma.$connect();
-        const dbComment = {...comment, address: hash, tokenId: comment.id};
+        const {id, text, author, amount, duration} = comment;
+        const dbComment = {
+            tokenId: id,
+            address: hash,
+            text,
+            author,
+            amount,
+            duration
+        }
         await prisma.comment.create({data: dbComment});
     }
 
