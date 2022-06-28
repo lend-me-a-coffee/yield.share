@@ -59,6 +59,9 @@ const CreateProfile = () => {
             case "rinkeby":
                 chainToSwitch = Chains.RINKEBY;
                 break;
+            case "ropsten":
+                chainToSwitch = Chains.ROPSTEN;
+                break;
             default:
                 throw new Error(`${network} not supported`);
         }
@@ -121,6 +124,7 @@ const CreateProfile = () => {
                         <option value='boba'>Boba</option>
                         <option value='cronos'>Cronos</option>
                         <option value='rinkeby'>Rinkeby</option>
+                        <option value='ropsten'>Ropsten</option>
                         <option value='skale' disabled>Skale</option>
                     </Select>
 
