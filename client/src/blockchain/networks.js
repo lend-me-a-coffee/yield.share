@@ -6,7 +6,8 @@ export const Chains = {
     CRONOS: 338,
     BOBA: 28,
     SKALE: 344435,
-    RINKEBY: 4
+    RINKEBY: 4,
+    ROPSTEN: 3
 }
 
 export const changeNetwork = async (chain) => {

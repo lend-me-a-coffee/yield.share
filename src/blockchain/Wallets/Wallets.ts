@@ -38,6 +38,12 @@ export class RinkebyWallet extends TatumWallet {
     }
 }
 
+export class RopstenWallet extends TatumWallet {
+    constructor() {
+        super(WalletType.ropsten);
+    }
+}
+
 export const getWalletByType = (type: WalletType): IWallet => {
     switch (type) {
         case WalletType.optimism:
@@ -52,6 +58,8 @@ export const getWalletByType = (type: WalletType): IWallet => {
             return new BobaWallet();
         case WalletType.rinkeby:
             return new RinkebyWallet();
+        case WalletType.ropsten:
+            return new RopstenWallet();
     }
     throw new Error(`Wallet ${type} does not exists`)
 }
@@ -63,7 +71,8 @@ export async function reportWalletStatuses(): Promise<{ name: string, lastBlock:
         new CronosWallet(),
         new SkaleWallet(),
         new BobaWallet(),
-        new RinkebyWallet()
+        new RinkebyWallet(),
+        new RopstenWallet()
     ];
 
     const promises: Promise<{ name: string, lastBlock: number }>[] = [];

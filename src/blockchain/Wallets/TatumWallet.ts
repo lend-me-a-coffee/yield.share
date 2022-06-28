@@ -6,6 +6,11 @@ export class TatumWallet implements IWallet {
     private readonly headers: Record<string, string | Record<string, string>>;
 
     constructor(public readonly type: WalletType) {
+        this.headers = {
+            headers: {
+                "x-api-key": process.env.TATUM_API!
+            }
+        };
         switch (type) {
             case WalletType.rinkeby:
                 this.chain = "ETH";
@@ -18,11 +23,9 @@ export class TatumWallet implements IWallet {
                 break;
             case WalletType.polygon:
                 this.chain = "MATIC";
-                this.headers = {
-                    headers: {
-                        "x-api-key": process.env.TATUM_API!
-                    }
-                };
+                break;
+            case WalletType.ropsten:
+                this.chain = "ETH";
                 break;
             default:
                 throw new Error(`Network ${type} is not supported by Tatum.io!`);
