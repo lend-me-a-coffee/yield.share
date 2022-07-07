@@ -1,5 +1,5 @@
 {
-  "name": "lend-me-a-coffee",
+  "name": "yield-share",
   "version": "0.0.1",
   "description": "Stake coffee to support your favorite creators",
   "main": "dist/index.js",
@@ -15,21 +15,21 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lend-me-a-coffee/lend-me-a-coffee.git"
+    "url": "git+https://github.com/lend-me-a-coffee/yield.share.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/lend-me-a-coffee/lend-me-a-coffee/issues"
+    "url": "https://github.com/lend-me-a-coffee/yield.share/issues"
   },
   "nodemonConfig": {
     "ignore": [
       "metadata/*"
     ]
   },
-  "homepage": "https://github.com/lend-me-a-coffee/lend-me-a-coffee#readme",
+  "homepage": "https://github.com/lend-me-a-coffee/yield.share#readme",
   "dependencies": {
-    "@prisma/client": "^3.15.2",
+    "@prisma/client": "^4.0.0",
     "axios": "^0.27.2",
     "body-parser": "^1.20.0",
     "cors": "^2.8.5",
@@ -50,7 +50,7 @@
     "eslint-plugin-import": "^2.26.0",
     "jest": "^28.1.1",
     "nodemon": "^2.0.18",
-    "prisma": "^3.15.2",
+    "prisma": "^4.0.0",
     "ts-jest": "^28.0.5",
     "ts-node": "^10.8.1",
     "typescript": "^4.7.4"
